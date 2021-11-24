@@ -83,11 +83,11 @@ def DHT11_MQ135():
           sys.exit()
 
 # JS
-URL = 'http://119.70.16.37:9002/api/car/456가1234'
-headers = {'Authorization' : 'Basic YWRtaW46YWRtaW4'}
+URL = ''
+headers = {'Authorization' : ''}
 
 # SOCKET 통신
-HOST = '192.168.0.28'
+HOST = ''
 PORT = 9999
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((HOST,PORT))
