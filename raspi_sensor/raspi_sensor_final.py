@@ -87,7 +87,7 @@ URL = ''
 headers = {'Authorization' : ''}
 
 # SOCKET 통신
-HOST = ''
+HOST = '192.168.0.28'
 PORT = 9999
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket.connect((HOST,PORT))
