@@ -15,12 +15,15 @@ Environment
 > 
 > Python 3.7.3
 
-## sensor
--- Jetson-Nano : Webcam * 2, buzzer
--- Raspberry Pi4 : MQ-135(공기질 센서), ADS1115(ADC), DHT11(온습도), CSI-Camera
+### sensor
+**Jetson-Nano** : Webcam * 2, buzzer
 
-## referecne
--- face detection : https://google.github.io/mediapipe/solutions/face_detection.html
--- face recognition : https://github.com/sayannath/Driver-Sleeping-Detection---Computer-Vision/blob/master/Driver%20Fatigue%20Detection.py
--- sleep detection : https://github.com/sayannath/Driver-Sleeping-Detection---Computer-Vision/blob/master/Driver%20Fatigue%20Detection.py
+**Raspberry Pi4** : MQ-135(공기질 센서), ADS1115(ADC), DHT11(온습도), CSI-Camera
+
+### referecne
+> face detection : https://google.github.io/mediapipe/solutions/face_detection.html
+>
+> face recognition : https://github.com/sayannath/Driver-Sleeping-Detection---Computer-Vision/blob/master/Driver%20Fatigue%20Detection.py
+>
+> sleep detection : https://github.com/sayannath/Driver-Sleeping-Detection---Computer-Vision/blob/master/Driver%20Fatigue%20Detection.py
 
