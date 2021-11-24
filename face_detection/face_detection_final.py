@@ -3,30 +3,34 @@ import mediapipe as mp
 import socket
 import requests
 import time 
+
+# mediapipe 모델 정의
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
 
 front_num=0
 
 # JS
-URL = 'http://119.70.16.37:9002/api/car/123호1234'
-headers = {'Authorization' : 'Basic YWRtaW46YWRtaW4'}
+URL = ''
+headers = {'Authorization' : ''}
 
-# SOCKET
+# SOCKET 통신
 HOST = '192.168.0.28'
 PORT = 9999
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # 소켓 객체 생성(IPv4, stream)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
+# 통신 확인
 try:
   server_socket.bind((HOST,PORT))
 except socket.error:
   print("Bind Failed")
 
-server_socket.listen()
-client_socket, addr = server_socket.accept()
-print('Connected by', addr)
+server_socket.listen() # 클라이언트의 접속 허용
+client_socket, addr = server_socket.accept() # accpet에서 대기, 클라이언트 접속하면 새로운 소켓 리턴
+print('Connected by', addr) # 접속한 클라이언트 주소 출력
 
+# 카메라 
 cap = cv2.VideoCapture(0)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -39,37 +43,36 @@ def face_detection(cap):
       success, frame = cap.read()
       if not success:
         print("Ignoring empty camera frame.")
-        # If loading a video, use 'break' instead of 'continue'.
         continue
 
       try : #socket
         data = client_socket.recv(1024)
-        if data.decode():
+        if data.decode(): # receive data
               cv2.imwrite("capture.png", frame)
               image = cv2.imread("capture.png")
-              # Flip the image horizontally for a later selfie-view display, and convert
+              
               # the BGR image to RGB.
-              image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
+              image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
               # To improve performance, optionally mark the image as not writeable to
               # pass by reference.
               image.flags.writeable = False
               results = face_detection.process(image)
 
-              # Draw the face detection annotations on the image.
+              
               image.flags.writeable = True
               image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     
               if results.detections:
                 for detection in results.detections:
-                 mp_drawing.draw_detection(image, detection)
+                 mp_drawing.draw_detection(image, detection) # Localization
     
     
               if results.detections is not None:
-                front_num = len(results.detections)
+                front_num = len(results.detections) # 식별 인원 수
 
-              if data.decode() is not None:
+              if data.decode() is not None: 
                 print('Received from', data.decode())
-                back_num = data.decode()    
+                back_num = data.decode() # 수신받은 문자열 출력
                 people_num = int(front_num) + int(back_num) 
                 print("front_num : {}" .format(int(front_num)))
                 print("back_num : {}" .format(int(back_num)))
@@ -86,6 +89,7 @@ def face_detection(cap):
                 break
 
 face_detection(cap)
-cur.close()
-db.close()
+
+client_socket.close()
+server_socket.close()
 cap.release() 
