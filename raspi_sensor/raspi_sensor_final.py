@@ -22,7 +22,7 @@ def cam():
           continue
           
         try :
-          # 5초마다 진행
+          # Send every 5 seconds
           if time.time() - start_time >=5:
             cv2.imwrite("capture.png", frame)
             start_time = time.time()
