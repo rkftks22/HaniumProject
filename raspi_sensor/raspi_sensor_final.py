@@ -1,4 +1,3 @@
-# import package
 import serial
 import time
 import sys
@@ -20,10 +19,10 @@ def cam():
         success, frame = cap.read()
         if not success:
           print("Ignoring empty camera frame.")
-          # If loading a video, use 'break' instead of 'continue'.
           continue
+          
         try :
-          # Send every 5 seconds
+          # 5초마다 진행
           if time.time() - start_time >=5:
             cv2.imwrite("capture.png", frame)
             start_time = time.time()
@@ -40,13 +39,14 @@ def cam():
             if results.detections:
               for detection in results.detections:
                 mp_drawing.draw_detection(image, detection)
-    
-              print(len(results.detections))    
+      
+            # 인원수 확인
             if results.detections is not None:
               num = len(results.detections)
             else :
               num = 0
-            # data transmission  
+              
+            # 데이터 전송 
             data = client_socket.send(str(num).encode())
             print('Send {}'.format(data.decode())) 
             start_time = time.time()
@@ -71,8 +71,8 @@ def DHT11_MQ135():
             )
             data2 = {'air_quality' : mq, 'temperature' : temperature_c, 'humidity' : humidity}
             response = requests.put(URL, json=data2, headers=headers)
+            
         except RuntimeError as error:
-            # Errors happen fairly often, DHT's are hard to read, just keep going
             print(error.args[0])
             time.sleep(2.0)
             continue
