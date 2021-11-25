@@ -22,11 +22,11 @@ mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
 
 # JS
-headers = {'Authorization' : 'Basic YWRtaW46YWRtaW4'}
-URL_server = 'http://119.70.16.37:3000/'
-URL_web = 'http://119.70.16.37:9002/'
-URL_web_user = URL_web +'api/user/'
-URL_web_reservation = URL_web + 'api/reservations/'
+headers = {'Authorization' : ''}
+URL_server = ''
+URL_web = ''
+URL_web_user = URL_web +''
+URL_web_reservation = URL_web + ''
 
 # SOCKET
 HOST = '192.168.0.28'
@@ -141,7 +141,7 @@ def cam1():
     URL_recog = ''
     certification_name = ""
     
-    # camera setting
+    # video setting
     camera = cv2.VideoCapture(0)
     camera.set(3, 640)
     camera.set(4, 480)
@@ -149,6 +149,7 @@ def cam1():
     # gpio setting
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(output_pin, GPIO.OUT, initial = GPIO.LOW)
+    
     # face_recognition
     while True:
         for i in range(len(requests.get(URL_web_reservation, headers = headers).json()['_embedded']['reservationResourceList'])):
@@ -332,7 +333,7 @@ def cam2():
               else:
                   front_num = 0
             
-              # µ¥ÀÌÅÍ ¼ö½Å ¹× ¼­¹ö·Î ¼Û½Å
+              # After receiving the data, send it to the server.
               if data.decode() is not None:
                 print('Received from', data.decode())
                 back_num = data.decode()    
@@ -348,6 +349,6 @@ def cam2():
                 break
     camera2.release() 
 
-
+# threads by sensor
 threading.Thread(target=cam1).start()
 threading.Thread(target=cam2).start()
