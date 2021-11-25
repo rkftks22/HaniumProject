@@ -4,7 +4,7 @@ import socket
 import requests
 import time 
 
-# mediapipe 모델 정의
+# mediapipe model
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
 
@@ -20,7 +20,7 @@ PORT = 9999
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # 소켓 객체 생성(IPv4, stream)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-# 통신 확인
+# 연결 확인
 try:
   server_socket.bind((HOST,PORT))
 except socket.error:
@@ -30,7 +30,7 @@ server_socket.listen() # 클라이언트의 접속 허용
 client_socket, addr = server_socket.accept() # accpet에서 대기, 클라이언트 접속하면 새로운 소켓 리턴
 print('Connected by', addr) # 접속한 클라이언트 주소 출력
 
-# 카메라 
+# video setting
 cap = cv2.VideoCapture(0)
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
