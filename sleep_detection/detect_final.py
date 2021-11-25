@@ -5,19 +5,23 @@ from scipy.spatial import distance
 import RPi.GPIO as GPIO
 import time
 
-def calculate_EAR(eye):
+def calculate_EAR(eye): # 눈 거리 계산
 	A = distance.euclidean(eye[1], eye[5])
 	B = distance.euclidean(eye[2], eye[4])
 	C = distance.euclidean(eye[0], eye[3])
 	ear_aspect_ratio = (A+B)/(2.0*C)
 	return ear_aspect_ratio
 
+# 카메라 셋팅
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
+
+# dlib 인식 모델 정의
 hog_face_detector = dlib.get_frontal_face_detector()
 dlib_facelandmark = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
+# gpio 셋팅
 lastsave = 0
 output_pin = 18
 GPIO.setmode(GPIO.BCM)
@@ -57,7 +61,7 @@ while True:
         leftEye = []
         rightEye = []
 
-        for n in range(36,42):
+        for n in range(36,42): # 오른쪽 눈 감지
         	x = face_landmarks.part(n).x
         	y = face_landmarks.part(n).y
         	leftEye.append((x,y))
@@ -68,7 +72,7 @@ while True:
         	y2 = face_landmarks.part(next_point).y
         	cv2.line(frame,(x,y),(x2,y2),(0,255,0),1)
 
-        for n in range(42,48):
+        for n in range(42,48): # 왼쪽 눈 감지
         	x = face_landmarks.part(n).x
         	y = face_landmarks.part(n).y
         	rightEye.append((x,y))
